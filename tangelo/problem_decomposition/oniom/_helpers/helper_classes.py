@@ -23,7 +23,7 @@ from typing import Union, List
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
-from tangelo.algorithms import CCSDSolver, FCISolver, VQESolver, ADAPTSolver, QITESolver
+from tangelo.algorithms import CCSDSolver, FCISolver, VQESolver, ADAPTSolver, QITESolver, SQDSolver
 from tangelo.problem_decomposition.oniom._helpers.capping_groups import elements, chemical_groups
 from tangelo.toolboxes.molecular_computation.molecule import SecondQuantizedMolecule, get_default_integral_solver
 
@@ -146,7 +146,7 @@ class Fragment:
         self.options_high = options_high if options_high is not None else default_solver_options
 
         self.supported_classical_solvers = {"HF": None, "CCSD": CCSDSolver, "FCI": FCISolver}
-        self.supported_quantum_solvers = {"VQE": VQESolver, "ADAPT": ADAPTSolver, "QITE": QITESolver}
+        self.supported_quantum_solvers = {"VQE": VQESolver, "ADAPT": ADAPTSolver, "QITE": QITESolver, "SQD": SQDSolver}
 
         # Check if the solvers are implemented in ONIOM.
         builtin_solvers = self.supported_classical_solvers.keys() | self.supported_quantum_solvers.keys()

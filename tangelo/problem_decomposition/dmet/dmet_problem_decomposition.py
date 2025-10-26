@@ -26,7 +26,7 @@ from tangelo import SecondQuantizedMolecule
 from tangelo.problem_decomposition.dmet import _helpers as helpers
 from tangelo.problem_decomposition.problem_decomposition import ProblemDecomposition
 from tangelo.problem_decomposition.electron_localization import iao_localization, meta_lowdin_localization, nao_localization
-from tangelo.algorithms import FCISolver, CCSDSolver, VQESolver, MP2Solver
+from tangelo.algorithms import FCISolver, CCSDSolver, VQESolver, MP2Solver, SQDSolver
 from tangelo.toolboxes.post_processing.mc_weeny_rdm_purification import mcweeny_purify_2rdm
 from tangelo.toolboxes.molecular_computation.rdms import pad_rdms_with_frozen_orbitals_restricted, \
     pad_rdms_with_frozen_orbitals_unrestricted
@@ -186,6 +186,8 @@ class DMETProblemDecomposition(ProblemDecomposition):
                     self.solvers_options.append(dict())
                 elif solver.lower() == "vqe":
                     self.solvers_options.append(default_vqe_options)
+                elif solver.lower() == "sqd":
+                    self.solvers_options.append(dict())
                 else:
                     raise NotImplementedError(f"Solver {solver} is not implemented.")
         elif isinstance(self.solvers_options, dict):
@@ -529,6 +531,12 @@ class DMETProblemDecomposition(ProblemDecomposition):
                 if save_results:
                     self.solver_fragment_dict[i] = solver_fragment
                     self.rdm_measurements[i] = self.solver_fragment_dict[i].rdm_freq_dict
+            elif solver_fragment.lower() == "sqd":
+                system = {"molecule": dummy_mol}
+                solver_fragment = SQDSolver({**system, **solver_options})
+                solver_fragment.build()
+                solver_fragment.simulate()
+                onerdm, twordm = solver_fragment.get_rdm()
 
             # Compute the fragment energy and sum up the number of electrons
             if self.uhf:
@@ -602,7 +610,17 @@ class DMETProblemDecomposition(ProblemDecomposition):
                     print("\t\tFragment Number : # ", i + 1)
                     print("\t\t------------------------")
                     print(f"\t\t{vqe_resources}\n")
+            elif solver_fragment == 'sqd':
+                system = {"molecule": dummy_mol}
+                solver_fragment = SQDSolver({**system, **solver_options})
+                solver_fragment.build()
+                sqd_resources = solver_fragment.get_resources()
+                resources_fragments[i] = sqd_resources
 
+                if self.verbose:
+                    print("\t\tFragment Number : # ", i + 1)
+                    print("\t\t------------------------")
+                    print(f"\t\t{sqd_resources}\n")
         return resources_fragments
 
     def _compute_energy_restricted(self, dmet_fragment, onerdm, twordm):
