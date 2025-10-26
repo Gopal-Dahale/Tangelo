@@ -1,0 +1,8 @@
+ase==3.26.0
+ffsim==0.0.49
+matplotlib==3.10.7
+numpy==2.3.4
+pyscf==2.7.0
+qiskit==2.2.0
+qiskit_aer==0.17.0
+qiskit_ibm_runtime==0.37.0
