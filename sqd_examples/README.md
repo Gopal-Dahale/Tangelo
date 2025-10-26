@@ -2,7 +2,7 @@
 
 This repository contains a collection of Jupyter notebooks and resources demonstrating the use of Tangelo for quantum chemistry simulations. The examples focus on Sample-based Quantum Diagonalization (SQD), Density Matrix Embedding Theory (DMET), and the QM/MM method for solving complex molecular problems.
 
-Checkout the **`Report.pdf`** for more information and results obtained with simulations. Refer to **`Presentation.mkv`** for video presentation.
+Checkout the **`Report.pdf`** for more information and results obtained with simulations. Refer to **`Presentation.mkv`** for video presentation. [Google Drive Link](https://drive.google.com/file/d/1uMRNehYvUtgddLNCAZPCtnI401FCg-is/view?usp=sharing) to presentation.
 
 ## Project Structure
 
